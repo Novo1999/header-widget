@@ -9,6 +9,14 @@ export interface HeadlineContextType {
   setFontWeight: Dispatch<SetStateAction<string>>
   fontFamily: string
   setFontFamily: Dispatch<SetStateAction<string>>
+  gradientEnabled: boolean
+  setGradientEnabled: Dispatch<SetStateAction<boolean>>
+  gradientDirection: string
+  setGradientDirection: Dispatch<SetStateAction<string>>
+  gradientFrom: string
+  setGradientFrom: Dispatch<SetStateAction<string>>
+  gradientTo: string
+  setGradientTo: Dispatch<SetStateAction<string>>
 }
 export interface HeadlineProviderProps {
   children: ReactNode
