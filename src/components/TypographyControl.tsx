@@ -1,21 +1,69 @@
+import { useState } from 'react'
 import { useHeadline } from '../hooks/useHeadline'
-import { Input } from './ui/input'
+import type { TextStyle } from '../interface/TextStyle'
 import { Label } from './ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import { Textarea } from './ui/textarea'
 
 const TypographyControl = () => {
-  const { setText, text, setFontFamily, setFontSize, setFontWeight } = useHeadline()
+  const { setText, text, setFontFamily, textStyles, setTextStyles, setFontSize, setFontWeight } = useHeadline()
+  const [selection, setSelection] = useState({ start: 0, end: 0 })
 
   const handleChangeText = (value: string) => {
     setText(value)
+  }
+  const applyStyle = (styleClass: string) => {
+    if (selection.start === selection.end) return
+
+    const newStyle: TextStyle = {
+      start: selection.start,
+      end: selection.end,
+      style: styleClass,
+    }
+
+    const filteredStyles = textStyles.filter((style) => !(style.start < selection.end && style.end > selection.start))
+
+    setTextStyles([...filteredStyles, newStyle])
+
+    setSelection({ start: 0, end: 0 })
+  }
+
+  const removeStyle = (styleToRemove: TextStyle) => {
+    setTextStyles(textStyles.filter((style) => style !== styleToRemove))
   }
 
   return (
     <>
       <div className="flex flex-col gap-2">
         <Label htmlFor="text">Main Text</Label>
-        <Input value={text} onChange={(e) => handleChangeText(e.target.value)} />
+        <Textarea
+          onSelect={(e) => {
+            const { selectionStart, selectionEnd } = e.target as HTMLTextAreaElement
+            setSelection({ start: selectionStart, end: selectionEnd })
+          }}
+          value={text}
+          onChange={(e) => handleChangeText(e.target.value)}
+        />
+        {selection.start !== selection.end && (
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <button onClick={() => applyStyle('bg-yellow-300 px-1 rounded')} className="px-3 py-1 bg-yellow-300 rounded text-sm hover:bg-yellow-400 transition-colors">
+                Highlight
+              </button>
+              <button onClick={() => applyStyle('underline decoration-2 underline-offset-2')} className="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300 transition-colors">
+                Underline
+              </button>
+              <button onClick={() => applyStyle('bg-black text-white px-2 py-1 rounded')} className="px-3 py-1 bg-black text-white rounded text-sm hover:bg-gray-800 transition-colors">
+                Background Block
+              </button>
+              <button onClick={() => applyStyle('text-blue-600 font-semibold')} className="px-3 py-1 bg-blue-100 text-blue-600 rounded text-sm hover:bg-blue-200 transition-colors">
+                Accent
+              </button>
+            </div>
+          </div>
+        )}
       </div>
+
       <div className="flex gap-2">
         <div className="flex gap-1 flex-col">
           <Label className="text-sm font-medium">Font Size</Label>

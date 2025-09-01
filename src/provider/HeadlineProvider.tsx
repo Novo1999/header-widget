@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import HeadlineContext from '../context/HeadlineContext'
 import type { HeadlineProviderProps } from '../interface/HeadlineContext'
+import type { TextStyle } from '../interface/TextStyle'
 
 const HeadlineProvider: React.FC<HeadlineProviderProps> = ({ children }) => {
   const [text, setText] = useState<string>('Your Text Here')
@@ -12,6 +13,8 @@ const HeadlineProvider: React.FC<HeadlineProviderProps> = ({ children }) => {
   const [gradientDirection, setGradientDirection] = useState<string>('to-r')
   const [gradientFrom, setGradientFrom] = useState<string>('#3b82f6')
   const [gradientTo, setGradientTo] = useState<string>('#9333ea')
+
+  const [textStyles, setTextStyles] = useState<TextStyle[]>([])
 
   return (
     <HeadlineContext.Provider
@@ -32,6 +35,8 @@ const HeadlineProvider: React.FC<HeadlineProviderProps> = ({ children }) => {
         setGradientFrom,
         gradientTo,
         setGradientTo,
+        textStyles,
+        setTextStyles,
       }}
     >
       {children}

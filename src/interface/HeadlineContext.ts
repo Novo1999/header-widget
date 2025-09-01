@@ -1,4 +1,5 @@
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
+import type { TextStyle } from './TextStyle'
 
 export interface HeadlineContextType {
   text: string
@@ -17,6 +18,8 @@ export interface HeadlineContextType {
   setGradientFrom: Dispatch<SetStateAction<string>>
   gradientTo: string
   setGradientTo: Dispatch<SetStateAction<string>>
+  textStyles: TextStyle[]
+  setTextStyles: Dispatch<SetStateAction<TextStyle[]>>
 }
 export interface HeadlineProviderProps {
   children: ReactNode
