@@ -98,7 +98,7 @@ const HeroHeadline = () => {
     <section className="bg-gradient-to-br from-slate-50 relative via-blue-50 to-purple-50 flex items-start">
       <Button onClick={() => exportInnerHtml('main-content')} className='absolute left-4 top-4'>Export HTML</Button>
 
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-12 sm:mt-0">
         <div>
           <div className="space-y-8">
             <div className="space-y-6">
