@@ -7,7 +7,7 @@ import ColorPicker from './ColorPicker'
 import { Label } from './ui/label'
 import { Switch } from './ui/switch'
 
-const GradientControls = () => {
+const GradientControl = () => {
   const {
     gradientDirection,
     gradientEnabled,
@@ -69,7 +69,20 @@ const GradientControls = () => {
           onCheckedChange={setGradientEnabled}
         />
       </div>
-
+      {gradientEnabled && (
+        <div className="flex justify-center">
+          <Label>Select Text From Input First To Apply The Gradient</Label>
+        </div>
+      )}
+      {gradientEnabled && selection.start !== selection.end && (
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Apply to Selection</Label>
+          <button onClick={applyGradientToSelection} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+            Apply Gradient to Selected Text
+          </button>
+          <p className="text-xs text-gray-500 text-center">Selected: "{text.slice(selection.start, selection.end)}"</p>
+        </div>
+      )}
       {gradientEnabled && (
         <>
           <div className="space-y-2">
@@ -91,7 +104,7 @@ const GradientControls = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-wrap gap-4">
             <ColorPicker label="From Color" color={gradientFrom} handleColor={handleSetGradientFrom} setter={setGradientFrom} />
 
             <ColorPicker label="To Color" color={gradientTo} handleColor={handleSetGradientTo} setter={setGradientTo} />
@@ -108,19 +121,10 @@ const GradientControls = () => {
               }}
             />
           </div>
-          {gradientEnabled && selection.start !== selection.end && (
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Apply to Selection</Label>
-              <button onClick={applyGradientToSelection} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
-                Apply Gradient to Selected Text
-              </button>
-              <p className="text-xs text-gray-500 text-center">Selected: "{text.slice(selection.start, selection.end)}"</p>
-            </div>
-          )}
         </>
       )}
     </div>
   )
 }
 
-export default GradientControls
+export default GradientControl

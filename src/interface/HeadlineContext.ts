@@ -11,6 +11,10 @@ export interface HeadlineContextType {
   setFontWeight: Dispatch<SetStateAction<string>>
   fontFamily: string
   setFontFamily: Dispatch<SetStateAction<string>>
+  lineHeight: string
+  setLineHeight: Dispatch<SetStateAction<string>>
+  letterSpacing: string
+  setLetterSpacing: Dispatch<SetStateAction<string>>
   gradientEnabled: boolean
   setGradientEnabled: Dispatch<SetStateAction<boolean>>
   gradientDirection: string
@@ -26,6 +30,7 @@ export interface HeadlineContextType {
   selection: { start: number; end: number }
   setSelection: Dispatch<SetStateAction<{ start: number; end: number }>>
 }
+
 export interface HeadlineProviderProps {
   children: ReactNode
 }

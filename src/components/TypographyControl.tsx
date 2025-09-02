@@ -5,11 +5,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Textarea } from './ui/textarea'
 
 const TypographyControl = () => {
-  const { setText, text, setFontFamily, textStyles, setTextStyles, setFontSize, selection, setSelection, setFontWeight } = useHeadline()
+  const { setText, text, setFontFamily, textStyles, setTextStyles, setFontSize, selection, setSelection, setFontWeight, setLineHeight, setLetterSpacing } = useHeadline()
 
   const handleChangeText = (value: string) => {
     setText(value)
   }
+
   const applyStyle = (styleClass: string) => {
     if (selection.start === selection.end) return
 
@@ -40,7 +41,7 @@ const TypographyControl = () => {
         />
         {selection.start !== selection.end && (
           <div className="space-y-2">
-            <div className="flex gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <button onClick={() => applyStyle('bg-yellow-300 px-1 text-white rounded')} className="px-3 py-1 bg-yellow-300 rounded text-sm hover:bg-yellow-400 transition-colors">
                 Highlight
               </button>
@@ -51,11 +52,33 @@ const TypographyControl = () => {
                 Background Block
               </button>
             </div>
+
+            {/* Text Shadow Effects */}
+            <div className="space-y-2">
+              <Label className="text-xs font-medium text-gray-600">Text Shadow Effects</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={() => applyStyle('drop-shadow-sm')} className="px-3 py-1 border border-gray-200 rounded text-sm hover:bg-gray-100 transition-colors">
+                  Subtle Shadow
+                </button>
+                <button onClick={() => applyStyle('drop-shadow-md')} className="px-3 py-1 border border-gray-200 rounded text-sm hover:bg-gray-100 transition-colors">
+                  Medium Shadow
+                </button>
+                <button onClick={() => applyStyle('drop-shadow-lg')} className="px-3 py-1 border border-gray-200 rounded text-sm hover:bg-gray-100 transition-colors">
+                  Large Shadow
+                </button>
+                <button onClick={() => applyStyle('drop-shadow-xl')} className="px-3 py-1 border border-gray-200 rounded text-sm hover:bg-gray-100 transition-colors">
+                  XL Shadow
+                </button>
+                <button onClick={() => applyStyle('drop-shadow-2xl')} className="px-3 py-1 border border-gray-200 rounded text-sm hover:bg-gray-100 transition-colors">
+                  2XL Shadow
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      <div className="flex gap-2">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-2">
         <div className="flex gap-1 flex-col">
           <Label className="text-sm font-medium">Font Size</Label>
           <Select onValueChange={setFontSize}>
@@ -80,7 +103,7 @@ const TypographyControl = () => {
         <div className="flex gap-1 flex-col">
           <Label className="text-sm font-medium">Font Family</Label>
           <Select onValueChange={setFontFamily}>
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Font" />
             </SelectTrigger>
             <SelectContent>
@@ -115,6 +138,40 @@ const TypographyControl = () => {
               <SelectItem value="font-semibold">Semibold</SelectItem>
               <SelectItem value="font-bold">Bold</SelectItem>
               <SelectItem value="font-extrabold">Extrabold</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex gap-1 flex-col">
+          <Label className="text-sm font-medium">Line Height</Label>
+          <Select onValueChange={setLineHeight}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Height" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="leading-none">None</SelectItem>
+              <SelectItem value="leading-tight">Tight</SelectItem>
+              <SelectItem value="leading-snug">Snug</SelectItem>
+              <SelectItem value="leading-normal">Normal</SelectItem>
+              <SelectItem value="leading-relaxed">Relaxed</SelectItem>
+              <SelectItem value="leading-loose">Loose</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex gap-1 flex-col">
+          <Label className="text-sm font-medium">Letter Spacing</Label>
+          <Select onValueChange={setLetterSpacing}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Spacing" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="tracking-tighter">Tighter</SelectItem>
+              <SelectItem value="tracking-tight">Tight</SelectItem>
+              <SelectItem value="tracking-normal">Normal</SelectItem>
+              <SelectItem value="tracking-wide">Wide</SelectItem>
+              <SelectItem value="tracking-wider">Wider</SelectItem>
+              <SelectItem value="tracking-widest">Widest</SelectItem>
             </SelectContent>
           </Select>
         </div>

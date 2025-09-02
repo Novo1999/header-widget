@@ -9,6 +9,8 @@ const HeadlineProvider: React.FC<HeadlineProviderProps> = ({ children }) => {
   const [fontSize, setFontSize] = useState<string>('text-5xl')
   const [fontWeight, setFontWeight] = useState<string>('font-bold')
   const [fontFamily, setFontFamily] = useState<string>('font-sans')
+  const [lineHeight, setLineHeight] = useState<string>('leading-tight')
+  const [letterSpacing, setLetterSpacing] = useState<string>('tracking-normal')
 
   const [gradientEnabled, setGradientEnabled] = useState<boolean>(false)
   const [gradientDirection, setGradientDirection] = useState<string>('to-r')
@@ -29,9 +31,13 @@ const HeadlineProvider: React.FC<HeadlineProviderProps> = ({ children }) => {
         fontFamily,
         fontSize,
         fontWeight,
+        lineHeight,
+        letterSpacing,
         setFontFamily,
         setFontSize,
         setFontWeight,
+        setLineHeight,
+        setLetterSpacing,
         gradientEnabled,
         setGradientEnabled,
         gradientDirection,

@@ -1,17 +1,18 @@
 import { motion } from 'motion/react'
 import type React from 'react'
+import { toast } from 'sonner'
 import { useHeadline } from '../hooks/useHeadline'
 import { Button } from './ui/button'
 
 const HeroHeadline = () => {
-  const { text, fontFamily, fontWeight, fontSize, gradientEnabled, gradientDirection, gradientFrom, gradientTo, variant, textStyles } = useHeadline()
+  const { text, fontFamily, fontWeight, fontSize, gradientEnabled, gradientDirection, gradientFrom, gradientTo, lineHeight, letterSpacing, variant, textStyles } = useHeadline()
 
   function exportInnerHtml(elId: string) {
     const elHtml = document?.getElementById(elId)?.innerHTML
     if (elHtml) {
       navigator.clipboard.writeText(elHtml).then(
         () => {
-          console.log('HTML copied to clipboard')
+          toast('HTML copied')
         },
         (err) => {
           console.error('Failed to copy: ', err)
@@ -35,8 +36,16 @@ const HeroHeadline = () => {
       const styledText = text.slice(style.start, style.end)
       const hasUnderlineStyle = style.style.includes('underline')
       const isGradientText = style.style === 'gradient-text'
+      const isAnimatedText = style.style === 'animated-text'
 
-      if (isGradientText && gradientEnabled) {
+      if (isAnimatedText && variant) {
+        // Render motion span for animated text
+        result.push(
+          <motion.span key={index} {...variant}>
+            {styledText}
+          </motion.span>
+        )
+      } else if (isGradientText && gradientEnabled) {
         // Apply gradient to selected text
         result.push(
           <span
@@ -86,8 +95,8 @@ const HeroHeadline = () => {
     return result
   }
   return (
-    <section className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 flex items-start">
-      <Button onClick={() => exportInnerHtml('main-content')}>Export HTML</Button>
+    <section className="bg-gradient-to-br from-slate-50 relative via-blue-50 to-purple-50 flex items-start">
+      <Button onClick={() => exportInnerHtml('main-content')} className='absolute left-4 top-4'>Export HTML</Button>
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div>
@@ -102,6 +111,8 @@ const HeroHeadline = () => {
                    ${fontFamily} 
                    ${fontWeight} 
                    ${fontSize}
+                   ${lineHeight}
+                   ${letterSpacing}
                    ${gradientEnabled ? ` bg-clip-text ` : 'text-gray-900'}
                  `}
                   style={
