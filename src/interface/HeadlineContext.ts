@@ -1,3 +1,4 @@
+import type { MotionProps } from 'motion/react'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import type { TextStyle } from './TextStyle'
 
@@ -20,6 +21,10 @@ export interface HeadlineContextType {
   setGradientTo: Dispatch<SetStateAction<string>>
   textStyles: TextStyle[]
   setTextStyles: Dispatch<SetStateAction<TextStyle[]>>
+  variant: MotionProps | undefined
+  setVariant: Dispatch<SetStateAction<MotionProps | undefined>>
+  selection: { start: number; end: number }
+  setSelection: Dispatch<SetStateAction<{ start: number; end: number }>>
 }
 export interface HeadlineProviderProps {
   children: ReactNode

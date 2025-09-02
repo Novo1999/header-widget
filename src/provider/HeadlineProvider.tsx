@@ -1,3 +1,4 @@
+import type { MotionProps } from 'motion/react'
 import { useState } from 'react'
 import HeadlineContext from '../context/HeadlineContext'
 import type { HeadlineProviderProps } from '../interface/HeadlineContext'
@@ -15,6 +16,10 @@ const HeadlineProvider: React.FC<HeadlineProviderProps> = ({ children }) => {
   const [gradientTo, setGradientTo] = useState<string>('#9333ea')
 
   const [textStyles, setTextStyles] = useState<TextStyle[]>([])
+
+  const [variant, setVariant] = useState<MotionProps | undefined>(undefined)
+
+  const [selection, setSelection] = useState({ start: 0, end: 0 })
 
   return (
     <HeadlineContext.Provider
@@ -37,6 +42,10 @@ const HeadlineProvider: React.FC<HeadlineProviderProps> = ({ children }) => {
         setGradientTo,
         textStyles,
         setTextStyles,
+        variant,
+        setVariant,
+        selection,
+        setSelection,
       }}
     >
       {children}

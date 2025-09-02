@@ -1,11 +1,28 @@
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
+import { useCallback } from 'react'
 import useDebounce from '../hooks/useDebounce'
 import { useHeadline } from '../hooks/useHeadline'
+import type { TextStyle } from '../interface/TextStyle'
+import ColorPicker from './ColorPicker'
 import { Label } from './ui/label'
 import { Switch } from './ui/switch'
 
 const GradientControls = () => {
-  const { gradientDirection, gradientEnabled, gradientFrom, gradientTo, setGradientDirection, setGradientEnabled, setGradientFrom, setGradientTo } = useHeadline()
+  const {
+    gradientDirection,
+    gradientEnabled,
+    gradientFrom,
+    text,
+    gradientTo,
+    setGradientDirection,
+    setGradientEnabled,
+    setSelection,
+    selection,
+    setGradientFrom,
+    setGradientTo,
+    textStyles,
+    setTextStyles,
+  } = useHeadline()
 
   const directions = [
     { value: 'to-r', icon: ArrowRight, label: 'Right' },
@@ -16,7 +33,23 @@ const GradientControls = () => {
 
   // to improve performance, debounce the color event listener
   const handleSetGradientFrom = useDebounce((value: string) => setGradientFrom(value), 300)
-  const handleSetGradientTo = useDebounce((value: string) => setGradientFrom(value), 300)
+  const handleSetGradientTo = useDebounce((value: string) => setGradientTo(value), 300)
+
+  const applyGradientToSelection = useCallback(() => {
+    if (selection.start === selection.end) return
+
+    const newStyle: TextStyle = {
+      start: selection.start,
+      end: selection.end,
+      style: 'gradient-text',
+    }
+
+    // Remove any existing styles that overlap with the new selection
+    const filteredStyles = textStyles.filter((style) => !(style.start < selection.end && style.end > selection.start))
+
+    setTextStyles([...filteredStyles, newStyle])
+    setSelection({ start: 0, end: 0 })
+  }, [selection.end, selection.start, setSelection, setTextStyles, textStyles])
 
   return (
     <div className="space-y-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
@@ -59,33 +92,9 @@ const GradientControls = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">From Color</Label>
-              <div className="flex items-center gap-2">
-                <input type="color" value={gradientFrom} onChange={(e) => handleSetGradientFrom(e.target.value)} className="w-12 h-10 rounded-lg border border-gray-200 cursor-pointer" />
-                <input
-                  type="text"
-                  value={gradientFrom}
-                  onChange={(e) => setGradientFrom(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="#3b82f6"
-                />
-              </div>
-            </div>
+            <ColorPicker label="From Color" color={gradientFrom} handleColor={handleSetGradientFrom} setter={setGradientFrom} />
 
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">To Color</Label>
-              <div className="flex items-center gap-2">
-                <input type="color" value={gradientTo} onChange={(e) => handleSetGradientTo(e.target.value)} className="w-12 h-10 rounded-lg border border-gray-200 cursor-pointer" />
-                <input
-                  type="text"
-                  value={gradientTo}
-                  onChange={(e) => setGradientTo(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="#9333ea"
-                />
-              </div>
-            </div>
+            <ColorPicker label="To Color" color={gradientTo} handleColor={handleSetGradientTo} setter={setGradientTo} />
           </div>
 
           <div className="space-y-2">
@@ -99,6 +108,15 @@ const GradientControls = () => {
               }}
             />
           </div>
+          {gradientEnabled && selection.start !== selection.end && (
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Apply to Selection</Label>
+              <button onClick={applyGradientToSelection} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                Apply Gradient to Selected Text
+              </button>
+              <p className="text-xs text-gray-500 text-center">Selected: "{text.slice(selection.start, selection.end)}"</p>
+            </div>
+          )}
         </>
       )}
     </div>
