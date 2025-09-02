@@ -161,8 +161,8 @@
   }
 }
 
-.border-b-2 {
+.border-gradient {
   border-image: linear-gradient(var(--gradient-direction, to right), var(--gradient-from, #3acfd5), var(--gradient-to, #3a4ed5)) 1;
   border-style: solid;
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid black;
 }

@@ -21,6 +21,28 @@ const HeroHeadline = () => {
     }
   }
 
+  const exportJSON = () => {
+    const config = {
+      text,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      gradientEnabled,
+      gradientDirection,
+      gradientFrom,
+      gradientTo,
+      textStyles,
+      variant,
+    }
+
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'headline-config.json'
+    a.click()
+  }
+
   const renderStyledText = () => {
     if (textStyles.length === 0) return text
 
@@ -61,17 +83,22 @@ const HeroHeadline = () => {
           </span>
         )
       } else if (hasUnderlineStyle && gradientEnabled) {
+        console.log('hello')
         // Underlined text with gradient
         const styleWithoutUnderline = style.style.replace(/underline[^\s]*\s?/g, '').trim()
         result.push(
           <span
             key={index}
-            className={`${styleWithoutUnderline} border-b-2 border-gray-900 bg-clip-text text-transparent`}
-            style={{
-              backgroundImage: `linear-gradient(${
-                gradientDirection === 'to-r' ? 'to right' : gradientDirection === 'to-l' ? 'to left' : gradientDirection === 'to-b' ? 'to bottom' : 'to top'
-              }, ${gradientFrom}, ${gradientTo})`,
-            }}
+            className={`${styleWithoutUnderline} border-gradient border-gray-900 bg-clip-text text-transparent`}
+            style={
+              gradientEnabled
+                ? {
+                    backgroundImage: `linear-gradient(${
+                      gradientDirection === 'to-r' ? 'to right' : gradientDirection === 'to-l' ? 'to left' : gradientDirection === 'to-b' ? 'to bottom' : 'to top'
+                    }, ${gradientFrom}, ${gradientTo})`,
+                  }
+                : {}
+            }
           >
             {styledText}
           </span>
@@ -96,7 +123,12 @@ const HeroHeadline = () => {
   }
   return (
     <section className="bg-gradient-to-br from-slate-50 relative via-blue-50 to-purple-50 flex items-start">
-      <Button onClick={() => exportInnerHtml('main-content')} className='absolute left-4 top-4'>Export HTML</Button>
+      <Button onClick={() => exportInnerHtml('main-content')} className="absolute left-4 top-4">
+        Export HTML
+      </Button>
+      <Button onClick={exportJSON} className="absolute right-4 top-4">
+        Export JSON
+      </Button>
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-12 sm:mt-0">
         <div>
