@@ -139,6 +139,7 @@ const HeroHeadline = () => {
                   {...(variant || {})}
                   className={`
                    block 
+                   whitespace-pre-line
                    ${fontFamily} 
                    ${fontWeight} 
                    ${fontSize}
