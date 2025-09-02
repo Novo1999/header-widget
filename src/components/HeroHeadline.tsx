@@ -83,7 +83,6 @@ const HeroHeadline = () => {
           </span>
         )
       } else if (hasUnderlineStyle && gradientEnabled) {
-        console.log('hello')
         // Underlined text with gradient
         const styleWithoutUnderline = style.style.replace(/underline[^\s]*\s?/g, '').trim()
         result.push(
